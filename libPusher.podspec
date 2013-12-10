@@ -8,5 +8,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => 'git://github.com/lukeredpath/libPusher.git', :tag => 'v1.4' }
   s.source_files = 'Library/*'
   s.requires_arc = true
-  s.dependency 'SocketRocket', "0.2"
+  s.dependency 'SocketRocket', "0.3.1-beta2"
 end
