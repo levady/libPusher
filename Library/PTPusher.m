@@ -19,6 +19,7 @@
 #define kPUSHER_HOST @"ws.pusherapp.com"
 
 NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, BOOL secure);
+NSURL *PTSlangerConnectionURL(NSString *host, NSString *key, NSString *clientID, BOOL secure);
 
 NSString *const PTPusherEventReceivedNotification = @"PTPusherEventReceivedNotification";
 NSString *const PTPusherEventUserInfoKey          = @"PTPusherEventUserInfoKey";
@@ -27,10 +28,18 @@ NSString *const PTPusherErrorUnderlyingEventKey   = @"PTPusherErrorUnderlyingEve
 
 NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, BOOL encrypted)
 {
-  NSString *scheme = ((encrypted == YES) ? @"https" : @"http");
+  NSString *scheme = ((encrypted == YES) ? @"wss" : @"ws");
   NSString *URLString = [NSString stringWithFormat:@"%@://%@/app/%@?client=%@&protocol=%d&version=%f",
                          scheme, host, key, clientID, kPTPusherClientProtocolVersion, kPTPusherClientLibraryVersion];
   return [NSURL URLWithString:URLString];
+}
+
+NSURL *PTSlangerConnectionURL(NSString *host, NSString *key, NSString *clientID, BOOL encrypted)
+{
+    NSString *scheme = ((encrypted == YES) ? @"https" : @"http");
+    NSString *URLString = [NSString stringWithFormat:@"%@://%@/app/%@?client=%@&protocol=%d&version=%f",
+                           scheme, host, key, clientID, kPTPusherClientProtocolVersion, kPTPusherClientLibraryVersion];
+    return [NSURL URLWithString:URLString];
 }
 
 #define kPTPusherDefaultReconnectDelay 5.0
@@ -112,7 +121,13 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
 
 + (id)pusherWithHost:(NSString *)host key:(NSString *)key connectAutomatically:(BOOL)connectAutomatically encrypted:(BOOL)isEncrypted
 {
-    NSURL *serviceURL = PTPusherConnectionURL(host, key, @"libPusher", isEncrypted);
+    NSURL *serviceURL;
+    if ([host isEqual:nil]) {
+      serviceURL = PTPusherConnectionURL(kPUSHER_HOST, key, @"libPusher", isEncrypted);
+    } else {
+      serviceURL = PTSlangerConnectionURL(host, key, @"libPusher", isEncrypted);
+    }
+    
     PTPusherConnection *connection = [[PTPusherConnection alloc] initWithURL:serviceURL];
     PTPusher *pusher = [[self alloc] initWithConnection:connection connectAutomatically:connectAutomatically];
     return pusher;
