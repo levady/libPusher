@@ -175,6 +175,8 @@ extern NSString *const PTPusherErrorUnderlyingEventKey;
  */
 + (id)pusherWithKey:(NSString *)key connectAutomatically:(BOOL)connectAutomatically encrypted:(BOOL)isEncrypted;
 
++ (id)pusherWithHost:(NSString *)host key:(NSString *)key connectAutomatically:(BOOL)connectAutomatically encrypted:(BOOL)isEncrypted;
+
 ///------------------------------------------------------------------------------------/
 /// @name Managing the connection
 ///------------------------------------------------------------------------------------/
