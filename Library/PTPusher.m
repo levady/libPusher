@@ -17,7 +17,8 @@
 #import "PTPusherChannelAuthorizationOperation.h"
 #import "PTPusherChannel_Private.h"
 
-#define kPUSHER_HOST @"ws.pusherapp.com"
+#define kPUSHER_HOST @"localhost:8080"
+//#define kPUSHER_HOST @"ws.pusherapp.com"
 
 typedef NS_ENUM(NSUInteger, PTPusherAutoReconnectMode) {
   PTPusherAutoReconnectModeNoReconnect,
@@ -41,8 +42,9 @@ NSString *const PTPusherErrorUnderlyingEventKey   = @"PTPusherErrorUnderlyingEve
 
 NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, BOOL encrypted)
 {
-  NSString *scheme = ((encrypted == YES) ? @"wss" : @"ws");
-  NSString *URLString = [NSString stringWithFormat:@"%@://%@/app/%@?client=%@&protocol=%d&version=%@", 
+  NSString *scheme = ((encrypted == YES) ? @"https" : @"http");
+//  NSString *scheme = ((encrypted == YES) ? @"wss" : @"ws");
+  NSString *URLString = [NSString stringWithFormat:@"%@://%@/app/%@?client=%@&protocol=%d&version=%@",
                          scheme, host, key, clientID, kPTPusherClientProtocolVersion, kPTPusherClientLibraryVersion];
   return [NSURL URLWithString:URLString];
 }
