@@ -122,7 +122,7 @@ NSURL *PTSlangerConnectionURL(NSString *host, NSString *key, NSString *clientID,
 + (id)pusherWithHost:(NSString *)host key:(NSString *)key connectAutomatically:(BOOL)connectAutomatically encrypted:(BOOL)isEncrypted
 {
     NSURL *serviceURL;
-    if ([host isEqual:nil]) {
+    if (host == nil) {
       serviceURL = PTPusherConnectionURL(kPUSHER_HOST, key, @"libPusher", isEncrypted);
     } else {
       serviceURL = PTSlangerConnectionURL(host, key, @"libPusher", isEncrypted);
